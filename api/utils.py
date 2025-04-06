@@ -41,7 +41,11 @@ def extract_data(text, region, parameter, target_year):
     if data_start_index is None:
         print("Invalid format. Header row starting with 'year' not found.")
         return
-
+    # Delete existing data before storing new data
+    MonthlyData.objects.all().delete()
+    SeasonalData.objects.all().delete()
+    AnnualData.objects.all().delete()
+    
     headers = lines[data_start_index].split()
     data_lines = lines[data_start_index + 1:]
 
@@ -54,7 +58,7 @@ def extract_data(text, region, parameter, target_year):
 
         if year_data['year'] != str(target_year):
             continue  # Skip years not matching the user-specified year
-
+        
         # Save monthly data
         for month in headers[1:13]:
             MonthlyData.objects.update_or_create(
@@ -64,7 +68,7 @@ def extract_data(text, region, parameter, target_year):
                 month=month[:3].capitalize(),  # Ensure month is in the correct format (e.g., "Jan", "Feb")
                 defaults={'value': float(year_data[month]) if year_data[month] != "---" else None}
             )
-
+        
         # Save seasonal data
         for season in headers[13:17]:
             SeasonalData.objects.update_or_create(
@@ -74,7 +78,6 @@ def extract_data(text, region, parameter, target_year):
                 season=season.capitalize(),  # Ensure season is in the correct format (e.g., "Winter", "Spring")
                 defaults={'value': float(year_data[season]) if year_data[season] != "---" else None}
             )
-
         # Save annual data
         if 'ann' in year_data:
             AnnualData.objects.update_or_create(

@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .utils import get_weather_data
-from .models import MonthlyData, SeasonalData, AnnualData, Metadata, REGION_CHOICES, PARAMETER_CHOICES
+from .models import MonthlyData, SeasonalData, AnnualData, Metadata, REGION_CHOICES, PARAMETER_CHOICES,YEAR_CHOICES
 from .serializers import (
     FetchWeatherDataSerializer,
     MonthlyDataSerializer,
@@ -31,10 +31,13 @@ class FetchWeatherDataAPIView(APIView):
         # Return region and parameter choices (internal + display)
         region_choices = [{"value": key, "label": value} for key, value in REGION_CHOICES]
         parameter_choices = [{"value": key, "label": value} for key, value in PARAMETER_CHOICES]
+        # in year directly map years we dont have key value
+        year_choices = [{"value": year[0], "label": year[0]} for year in YEAR_CHOICES]
 
         return Response({
             "region_choices": region_choices,
-            "parameter_choices": parameter_choices
+            "parameter_choices": parameter_choices,
+            "year_choices": year_choices,
         }, status=status.HTTP_200_OK)    
 
 class AllDataListView(APIView):
@@ -52,7 +55,7 @@ class AllDataListView(APIView):
         annual_serializer = AnnualDataSerializer(annual_data, many=True)
         
         # Fetch metadata from the database
-        metadata = Metadata.objects.last()  # Get the latest metadata entry
+        metadata = Metadata.objects.all().first()  # Get the latest metadata entry
         metadata_content = metadata.content if metadata else "No metadata available."
 
 
