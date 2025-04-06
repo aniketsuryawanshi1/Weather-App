@@ -1,11 +1,16 @@
 asgiref==3.8.1
+certifi==2025.1.31
+charset-normalizer==3.4.1
 Django==4.2.10
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
-gunicorn==23.0.0 # For docker container.
+gunicorn==23.0.0
+idna==3.10
 mysqlclient==2.2.7
+packaging==24.2
 python-decouple==3.8
 python-dotenv==1.1.0
+requests==2.32.3
 sqlparse==0.5.3
 tzdata==2025.2
-requests==2.32.3
+urllib3==2.3.0
