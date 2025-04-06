@@ -45,7 +45,7 @@ class MonthlyData(models.Model):
 
     class Meta:
         unique_together = ('region', 'parameter', 'year', 'month')
-        ordering = ['year', 'month']  # Default ordering by year and month
+        ordering = ['year', 'month']  # Default ordering by year and month.
 
     def __str__(self):
         return f"{self.region} - {self.parameter} | {self.month} {self.year}"
@@ -60,7 +60,7 @@ class SeasonalData(models.Model):
 
     class Meta:
         unique_together = ('region', 'parameter', 'year', 'season')
-        ordering = ['year', 'season']  # Default ordering by year and season
+        ordering = ['year', 'season']  # Default ordering by year and season.
 
     def __str__(self):
         return f"{self.region} - {self.parameter} | {self.season} {self.year}"
@@ -74,7 +74,13 @@ class AnnualData(models.Model):
 
     class Meta:
         unique_together = ('region', 'parameter', 'year')
-        ordering = ['year']  # Default ordering by year
+        ordering = ['year']  # Default ordering by year.
 
     def __str__(self):
         return f"{self.region} - {self.parameter} | Annual {self.year}"
+
+class Metadata(models.Model):
+    content = models.TextField()  
+
+    def __str__(self):
+        return self.content[:50]

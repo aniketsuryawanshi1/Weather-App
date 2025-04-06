@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MonthlyData, SeasonalData, AnnualData
+from .models import MonthlyData, SeasonalData, AnnualData, Metadata
 
 @admin.register(MonthlyData)
 class MonthlyDataAdmin(admin.ModelAdmin):
@@ -18,3 +18,8 @@ class AnnualDataAdmin(admin.ModelAdmin):
     list_display = ('region', 'parameter', 'year', 'annual_value')
     list_filter = ('region', 'parameter', 'year')
     search_fields = ('region', 'parameter', 'year')
+
+@admin.register(Metadata)
+class MetadataAdmin(admin.ModelAdmin):
+    list_display = ('content',)
+    search_fields = ('content',)

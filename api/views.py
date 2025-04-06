@@ -2,13 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .utils import get_weather_data
-from .models import MonthlyData, SeasonalData, AnnualData
+from .models import MonthlyData, SeasonalData, AnnualData, Metadata, REGION_CHOICES, PARAMETER_CHOICES
 from .serializers import (
     FetchWeatherDataSerializer,
     MonthlyDataSerializer,
     SeasonalDataSerializer,
     AnnualDataSerializer,
 )
+
+
 
 
 class FetchWeatherDataAPIView(APIView):
@@ -24,6 +26,16 @@ class FetchWeatherDataAPIView(APIView):
 
             return Response({"message": "Data fetched and saved successfully."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get(self, request):
+        # Return region and parameter choices (internal + display)
+        region_choices = [{"value": key, "label": value} for key, value in REGION_CHOICES]
+        parameter_choices = [{"value": key, "label": value} for key, value in PARAMETER_CHOICES]
+
+        return Response({
+            "region_choices": region_choices,
+            "parameter_choices": parameter_choices
+        }, status=status.HTTP_200_OK)    
 
 class AllDataListView(APIView):
     def get(self, request):
@@ -38,9 +50,15 @@ class AllDataListView(APIView):
         # Fetch all AnnualData
         annual_data = AnnualData.objects.all()
         annual_serializer = AnnualDataSerializer(annual_data, many=True)
+        
+        # Fetch metadata from the database
+        metadata = Metadata.objects.last()  # Get the latest metadata entry
+        metadata_content = metadata.content if metadata else "No metadata available."
+
 
         # Combine all data into a single response
         return Response({
+            "metadata": metadata_content,
             "monthly_data": monthly_serializer.data,
             "seasonal_data": seasonal_serializer.data,
             "annual_data": annual_serializer.data,

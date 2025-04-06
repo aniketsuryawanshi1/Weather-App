@@ -1,5 +1,5 @@
 import requests
-from .models import MonthlyData, SeasonalData, AnnualData
+from .models import MonthlyData, SeasonalData, AnnualData, Metadata
 
 BASE_URL = "https://www.metoffice.gov.uk/pub/data/weather/uk/climate/datasets/{parameter}/date/{region}.txt"
 
@@ -15,7 +15,28 @@ def get_weather_data(region, parameter, year):
 
 def extract_data(text, region, parameter, target_year):
     lines = text.strip().split('\n')
+    # Extract metadata from the first few lines
+    metadata = []
+    data_start_index = 0
+    for i, line in enumerate(lines):
+        if line.strip().startswith("year"):
+            data_start_index = i
+            break
+        metadata.append(line.strip())
 
+    # Save metadata to the database using update_or_create
+    Metadata.objects.update_or_create(
+        defaults={"content": "\n".join(metadata)}  # Join metadata lines into a single string
+    )
+
+    print("\n" + "=" * 80)
+    print(f"📍 Weather Data Summary for Region: {region} | Parameter: {parameter}\n")
+    
+    # Print metadata
+    print("🔹 Metadata:")
+    for meta in metadata:
+        print(f"   - {meta}")
+        
     data_start_index = next((i for i, line in enumerate(lines) if line.strip().lower().startswith("year")), None)
     if data_start_index is None:
         print("Invalid format. Header row starting with 'year' not found.")
@@ -64,3 +85,8 @@ def extract_data(text, region, parameter, target_year):
             )
 
     print(f"Data for {region} and {parameter} in {target_year} saved successfully.")
+
+
+
+
+
