@@ -21,7 +21,7 @@ COPY requirements.txt /api/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy the project files
-COPY . /app/
+COPY . .
 
 # Change permissions to avoid permission issues
 RUN chmod +x manage.py

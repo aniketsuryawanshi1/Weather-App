@@ -109,7 +109,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', 'weather_app_db'),
         'USER': os.getenv('DB_USER', 'weather_app_db_user'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'Andi4frc3@'),
-        'HOST': os.getenv('DB_HOST', 'mysql_db'),  # Use 'mysql_db' for Docker setup
+        'HOST': os.getenv('DB_HOST', 'mysql_db_weather_app'),  # Use 'mysql_db' for Docker setup
         'PORT': os.getenv('DB_PORT', '3306'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"

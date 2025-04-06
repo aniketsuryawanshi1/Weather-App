@@ -1,0 +1,11 @@
+asgiref==3.8.1
+Django==4.2.10
+django-cors-headers==4.7.0
+djangorestframework==3.16.0
+gunicorn==23.0.0 # For docker container.
+mysqlclient==2.2.7
+python-decouple==3.8
+python-dotenv==1.1.0
+sqlparse==0.5.3
+tzdata==2025.2
+requests==2.32.3
