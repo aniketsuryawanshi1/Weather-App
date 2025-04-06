@@ -45,14 +45,10 @@ class MonthlyData(models.Model):
 
     class Meta:
         unique_together = ('region', 'parameter', 'year', 'month')
+        ordering = ['year', 'month']  # Default ordering by year and month
 
     def __str__(self):
         return f"{self.region} - {self.parameter} | {self.month} {self.year}"
-
-    @classmethod
-    def get_sorted_data(cls, region, parameter):
-        """Retrieve and sort monthly data by year and month."""
-        return cls.objects.filter(region=region, parameter=parameter).order_by('year', 'month')
 
 
 class SeasonalData(models.Model):
@@ -64,14 +60,10 @@ class SeasonalData(models.Model):
 
     class Meta:
         unique_together = ('region', 'parameter', 'year', 'season')
+        ordering = ['year', 'season']  # Default ordering by year and season
 
     def __str__(self):
         return f"{self.region} - {self.parameter} | {self.season} {self.year}"
-
-    @classmethod
-    def get_sorted_data(cls, region, parameter):
-        """Retrieve and sort seasonal data by year and season."""
-        return cls.objects.filter(region=region, parameter=parameter).order_by('year', 'season')
 
 
 class AnnualData(models.Model):
@@ -82,11 +74,7 @@ class AnnualData(models.Model):
 
     class Meta:
         unique_together = ('region', 'parameter', 'year')
+        ordering = ['year']  # Default ordering by year
 
     def __str__(self):
         return f"{self.region} - {self.parameter} | Annual {self.year}"
-
-    @classmethod
-    def get_sorted_data(cls, region, parameter):
-        """Retrieve and sort annual data by year."""
-        return cls.objects.filter(region=region, parameter=parameter).order_by('year')
