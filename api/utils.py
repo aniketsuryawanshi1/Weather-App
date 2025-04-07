@@ -29,13 +29,13 @@ def extract_data(text, region, parameter, target_year):
         defaults={"content": "\n".join(metadata)}  # Join metadata lines into a single string
     )
 
-    print("\n" + "=" * 80)
-    print(f"📍 Weather Data Summary for Region: {region} | Parameter: {parameter}\n")
+    # print("\n" + "=" * 80)
+    # print(f" Weather Data Summary for Region: {region} | Parameter: {parameter}\n")
     
     # Print metadata
-    print("🔹 Metadata:")
-    for meta in metadata:
-        print(f"   - {meta}")
+    # print(" Metadata:")
+    # for meta in metadata:
+    #     print(f"   - {meta}")
         
     data_start_index = next((i for i, line in enumerate(lines) if line.strip().lower().startswith("year")), None)
     if data_start_index is None:
@@ -87,7 +87,7 @@ def extract_data(text, region, parameter, target_year):
                 defaults={'annual_value': float(year_data['ann']) if year_data['ann'] != "---" else None}
             )
 
-    print(f"Data for {region} and {parameter} in {target_year} saved successfully.")
+    # print(f"Data for {region} and {parameter} in {target_year} saved successfully.")
 
 
 

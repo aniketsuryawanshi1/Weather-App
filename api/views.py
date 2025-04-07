@@ -55,7 +55,7 @@ class AllDataListView(APIView):
         annual_serializer = AnnualDataSerializer(annual_data, many=True)
         
         # Fetch metadata from the database
-        metadata = Metadata.objects.all().first()  # Get the latest metadata entry
+        metadata = Metadata.objects.all().first()  
         metadata_content = metadata.content if metadata else "No metadata available."
 
 
