@@ -128,7 +128,7 @@ const WeatherData = () => {
     <div
       style={{
         padding: 32,
-        background: "linear-gradient(to bottom right, #f0f2f5, #ffffff)",
+        background: "transparent",
         minHeight: "100vh",
       }}
     >
@@ -141,7 +141,7 @@ const WeatherData = () => {
         }}
       >
         <Card
-          title={`📍 Weather Data Summary for Region: ${data.region} | Parameter: ${data.parameter}`}
+          title={`📍 Weather Data Summary.`}
           style={{
             borderRadius: 16,
             marginTop: 24,

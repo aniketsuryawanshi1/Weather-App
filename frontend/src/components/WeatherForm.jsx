@@ -59,14 +59,14 @@ const WeatherForm = () => {
         alignItems: "center",
         justifyContent: "center",
         padding: 32,
-        background: "linear-gradient(to right, #f0f8ff, #e0f7fa)",
+        background: "transparent",
       }}
     >
       <div
         style={{
           width: "100%",
           maxWidth: 1000,
-          backgroundColor: "#fff",
+          backgroundColor: "transparent",
           padding: 32,
           borderRadius: 20,
           boxShadow: "0 4px 12px rgba(0,0,0,0.1)",

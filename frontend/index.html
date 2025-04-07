@@ -1,13 +1,104 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>UK MetOffice</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: linear-gradient(to top, #c9d6ff, #e2e2e2); /* light sky gradient */
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+      }
+      
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        z-index: 1;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <canvas id="rain"></canvas>
+
+    <div id="root" style="
+    z-index: 1;
+    position: relative;
+    height: 100vh;       
+    overflow-y: auto;    
+  "></div>
+
+    <script>
+      const canvas = document.getElementById('rain')
+      const ctx = canvas.getContext('2d')
+      
+      let width = (canvas.width = window.innerWidth)
+      let height = (canvas.height = window.innerHeight)
+      
+      const maxDrops = 500
+      const drops = []
+      
+      class RainDrop {
+        constructor() {
+          this.reset()
+        }
+      
+        reset() {
+          this.x = Math.random() * width
+          this.y = Math.random() * -height
+          this.length = Math.random() * 20 + 15
+          this.opacity = Math.random() * 0.4 + 0.1
+          this.speed = Math.random() * 5 + 4
+          this.width = Math.random() * 0.5 + 0.2
+        }
+      
+        fall() {
+          this.y += this.speed
+          if (this.y > height) {
+            this.reset()
+          }
+        }
+      
+        draw() {
+          ctx.beginPath()
+          ctx.strokeStyle = `rgba(100, 130, 180, ${this.opacity})` // soft blue rain
+          ctx.lineWidth = this.width
+          ctx.moveTo(this.x, this.y)
+          ctx.lineTo(this.x, this.y + this.length)
+          ctx.stroke()
+        }
+      }
+      
+      function createRain() {
+        for (let i = 0; i < maxDrops; i++) {
+          drops.push(new RainDrop())
+        }
+      }
+      
+      function animateRain() {
+        ctx.clearRect(0, 0, width, height)
+        for (let drop of drops) {
+          drop.fall()
+          drop.draw()
+        }
+        requestAnimationFrame(animateRain)
+      }
+      
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth
+        height = canvas.height = window.innerHeight
+      })
+      
+      createRain()
+      animateRain()
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
