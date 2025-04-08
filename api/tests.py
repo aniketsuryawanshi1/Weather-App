@@ -11,7 +11,7 @@ class FetchWeatherDataAPITest(TestCase):
         self.fetch_url = "/api/fetch-weather-data/"
         self.all_data_url = "/api/all-data/"
         self.valid_payload = {
-            "region": "england",
+            "region": "England_N",
             "parameter": "Tmax",
             "year": 2023
         }
@@ -48,33 +48,28 @@ class FetchWeatherDataAPITest(TestCase):
 
 class UtilsTest(TestCase):
     def setUp(self):
-        # Sample text mimicking raw weather data
         self.sample_text = """
         Metadata line 1
         Metadata line 2
         year Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec Win Spr Sum Aut ann
         2023 5.1 6.2 7.3 8.4 9.5 10.6 11.7 12.8 13.9 14.0 15.1 16.2 5.5 7.8 10.0 12.3 10.5
         """
-        self.region = "england"
+        self.region = "England_N"
         self.parameter = "Tmax"
         self.year = 2023
 
     def test_extract_data(self):
         extract_data(self.sample_text, self.region, self.parameter, self.year)
 
-        # Metadata check
         metadata = Metadata.objects.first()
         self.assertIsNotNone(metadata)
         self.assertIn("Metadata line 1", metadata.content)
 
-        # Monthly data
         monthly_data = MonthlyData.objects.filter(region=self.region, parameter=self.parameter, year=self.year)
         self.assertEqual(monthly_data.count(), 12)
 
-        # Seasonal data
         seasonal_data = SeasonalData.objects.filter(region=self.region, parameter=self.parameter, year=self.year)
         self.assertEqual(seasonal_data.count(), 4)
 
-        # Annual data
         annual_data = AnnualData.objects.filter(region=self.region, parameter=self.parameter, year=self.year)
         self.assertEqual(annual_data.count(), 1)
